@@ -44,7 +44,7 @@ var mads = function (options) {
         _this.data = json_data;
 
         _this.render.render();
-    }); 
+    });
 
     /* Get Tracker */
     if (typeof custTracker == 'undefined' && typeof rma != 'undefined') {
@@ -72,7 +72,7 @@ var mads = function (options) {
     } else {
         this.cte = [];
     }
-    
+
     /* tags */
     if (typeof tags == 'undefined' && typeof tags != 'undefined') {
         this.tags = this.tagsProcess(rma.tags);
@@ -115,15 +115,15 @@ mads.prototype.uniqId = function () {
 }
 
 mads.prototype.tagsProcess = function (tags) {
-    
+
     var tagsStr = '';
-    
+
     for(var obj in tags){
         if(tags.hasOwnProperty(obj)){
             tagsStr+= '&'+obj + '=' + tags[obj];
         }
-    }     
-    
+    }
+
     return tagsStr;
 }
 
@@ -254,7 +254,7 @@ var testunit = function () {
     this.app.loadJs( this.app.path + 'js/shake.js', function() {
         //create a new instance of shake.js.
         var myShakeEvent = new Shake({
-            threshold: 2, // optional shake strength threshold
+            threshold: 5, // optional shake strength threshold
             timeout: 500 // optional, determines the frequency of event generation
         });
 
@@ -263,12 +263,12 @@ var testunit = function () {
     } );
 }
 
-/* 
-* render function 
-* - render has to be done in render function 
+/*
+* render function
+* - render has to be done in render function
 * - render will be called once json data loaded
 */
-testunit.prototype.render = function () { 
+testunit.prototype.render = function () {
 
     this.app.contentTag.innerHTML = `
         <div id="container">
@@ -284,6 +284,9 @@ testunit.prototype.render = function () {
             </div>
         </div>
     `;
+
+    document.body.style.padding = 0;
+    document.body.style.margin = 0;
 
     var all_element = this.app.contentTag.querySelectorAll( '*' );
     var element = [];
