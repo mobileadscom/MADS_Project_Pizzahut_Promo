@@ -7,7 +7,7 @@
 * https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 *
 */
-var mads = function (options) {
+var mads = function(options) {
 
     var _this = this;
 
@@ -30,7 +30,9 @@ var mads = function (options) {
 
     /* fet */
     if (typeof fet == 'undefined' && typeof rma != 'undefined') {
-        this.fet = typeof rma.fet == 'string' ? [rma.fet] : rma.fet;
+        this.fet = typeof rma.fet == 'string'
+            ? [rma.fet]
+            : rma.fet;
     } else if (typeof fet != 'undefined') {
         this.fet = fet;
     } else {
@@ -40,7 +42,7 @@ var mads = function (options) {
     this.fetTracked = false;
 
     /* load json for assets */
-    this.loadJs(this.json, function () {
+    this.loadJs(this.json, function() {
         _this.data = json_data;
 
         _this.render.render();
@@ -98,7 +100,9 @@ var mads = function (options) {
     this.contentTag = document.getElementById('rma-widget');
 
     /* URL Path */
-    this.path = typeof rma != 'undefined' ? rma.customize.src : '';
+    this.path = typeof rma != 'undefined'
+        ? rma.customize.src
+        : '';
 
     /* Solve {2} issues */
     for (var i = 0; i < this.custTracker.length; i++) {
@@ -109,18 +113,18 @@ var mads = function (options) {
 };
 
 /* Generate unique ID */
-mads.prototype.uniqId = function () {
+mads.prototype.uniqId = function() {
 
     return new Date().getTime();
 }
 
-mads.prototype.tagsProcess = function (tags) {
+mads.prototype.tagsProcess = function(tags) {
 
     var tagsStr = '';
 
-    for(var obj in tags){
-        if(tags.hasOwnProperty(obj)){
-            tagsStr+= '&'+obj + '=' + tags[obj];
+    for (var obj in tags) {
+        if (tags.hasOwnProperty(obj)) {
+            tagsStr += '&' + obj + '=' + tags[obj];
         }
     }
 
@@ -128,28 +132,28 @@ mads.prototype.tagsProcess = function (tags) {
 }
 
 /* Link Opner */
-mads.prototype.linkOpener = function (url) {
+mads.prototype.linkOpener = function(url) {
 
-	if(typeof url != "undefined" && url !=""){
+    if (typeof url != "undefined" && url != "") {
 
-        if(typeof this.ct != 'undefined' && this.ct != '') {
+        if (typeof this.ct != 'undefined' && this.ct != '') {
             url = this.ct + encodeURIComponent(url);
         }
 
-		if (typeof mraid !== 'undefined') {
-			mraid.open(url);
-		}else{
-			window.open(url);
-		}
+        if (typeof mraid !== 'undefined') {
+            mraid.open(url);
+        } else {
+            window.open(url);
+        }
 
-        if(typeof this.cte != 'undefined' && this.cte != '') {
+        if (typeof this.cte != 'undefined' && this.cte != '') {
             this.imageTracker(this.cte);
         }
-	}
+    }
 }
 
 /* tracker */
-mads.prototype.tracker = function (tt, type, name, value) {
+mads.prototype.tracker = function(tt, type, name, value) {
 
     /*
     * name is used to make sure that particular tracker is tracked for only once
@@ -157,8 +161,8 @@ mads.prototype.tracker = function (tt, type, name, value) {
     */
     name = name || type;
 
-    if ( tt == 'E' && !this.fetTracked ) {
-        for ( var i = 0; i < this.fet.length; i++ ) {
+    if (tt == 'E' && !this.fetTracked && this.fet) {
+        for (var i = 0; i < this.fet.length; i++) {
             var t = document.createElement('img');
             t.src = this.fet[i];
 
@@ -168,7 +172,7 @@ mads.prototype.tracker = function (tt, type, name, value) {
         this.fetTracked = true;
     }
 
-    if ( typeof this.custTracker != 'undefined' && this.custTracker != '' && this.tracked.indexOf(name) == -1 ) {
+    if (typeof this.custTracker != 'undefined' && this.custTracker != '' && this.tracked.indexOf(name) == -1) {
         for (var i = 0; i < this.custTracker.length; i++) {
             var img = document.createElement('img');
 
@@ -205,8 +209,8 @@ mads.prototype.tracker = function (tt, type, name, value) {
     }
 };
 
-mads.prototype.imageTracker = function (url) {
-    for ( var i = 0; i < url.length; i++ ) {
+mads.prototype.imageTracker = function(url) {
+    for (var i = 0; i < url.length; i++) {
         var t = document.createElement('img');
         t.src = url[i];
 
@@ -216,7 +220,7 @@ mads.prototype.imageTracker = function (url) {
 }
 
 /* Load JS File */
-mads.prototype.loadJs = function (js, callback) {
+mads.prototype.loadJs = function(js, callback) {
     var script = document.createElement('script');
     script.src = js;
 
@@ -228,7 +232,7 @@ mads.prototype.loadJs = function (js, callback) {
 }
 
 /* Load CSS File */
-mads.prototype.loadCss = function (href) {
+mads.prototype.loadCss = function(href) {
     var link = document.createElement('link');
     link.href = href;
     link.setAttribute('type', 'text/css');
@@ -242,16 +246,14 @@ mads.prototype.loadCss = function (href) {
 * Unit Testing for mads
 *
 */
-var testunit = function () {
+var testunit = function() {
 
     /* pass in object for render callback */
-    this.app = new mads({
-        'render' : this
-    });
+    this.app = new mads({'render': this});
 
     this.render();
 
-    this.app.loadJs( this.app.path + 'js/shake.js', function() {
+    this.app.loadJs(this.app.path + 'js/shake.js', function() {
         //create a new instance of shake.js.
         var myShakeEvent = new Shake({
             threshold: 5, // optional shake strength threshold
@@ -260,7 +262,7 @@ var testunit = function () {
 
         // start listening to device motion
         myShakeEvent.start();
-    } );
+    });
 }
 
 /*
@@ -268,148 +270,138 @@ var testunit = function () {
 * - render has to be done in render function
 * - render will be called once json data loaded
 */
-testunit.prototype.render = function () {
+testunit.prototype.render = function() {
+    var is_ios = navigator.userAgent.match(/iPhone|iPad|iPod/i);
 
-    this.app.contentTag.innerHTML = `
-        <div id="container">
-            <img id="noddle" src="` + this.app.path + `images/bg.png" />
-            <img id="noddle-after" src="` + this.app.path + `images/end_img.png" />
-            <img id="shake-popup" src="` + this.app.path + `images/cta.png">
-            <img id="link-btn" src="` + this.app.path + `images/end_cta.png">
-            <div id="gredients">
-                <img id="udang" src="` + this.app.path + `images/udang.png" />
-                <img id="chikuwa" src="` + this.app.path + `images/chikuwa.png" />
-                <img id="parika" src="` + this.app.path + `images/paprika.png" />
-                <img id="chilli" src="` + this.app.path + `images/saus.png" />
-            </div>
-        </div>
-    `;
+    this.app.contentTag.innerHTML = '\
+        <div id="container"> \
+            <img id="noddle" src="' + this.app.path + 'images/bg.png" />\
+            <img id="smoke" src="' + this.app.path + 'images/smoke.png" />\
+            <img id="noddle-after" src="' + this.app.path + 'images/end_img.png" />\
+            <img id="shake-popup" src="' + this.app.path + 'images/cta.png">\
+            <img id="link-btn" src="' + this.app.path + 'images/end_cta.png">\
+            <div id="gredients">\
+                <img id="udang" src="' + this.app.path + 'images/udang.png" />\
+                <img id="chikuwa" src="' + this.app.path + 'images/chikuwa.png" />\
+                <img id="parika" src="' + this.app.path + 'images/paprika.png" />\
+                <img id="chilli" src="' + this.app.path + 'images/saus.png" />\
+            </div>\
+        </div>\
+    ';
 
-    document.body.style.padding = 0;
-    document.body.style.margin = 0;
+    document.body.style.padding = 0
+    document.body.style.margin = 0
 
-    var all_element = this.app.contentTag.querySelectorAll( '*' );
+    var all_element = this.app.contentTag.querySelectorAll('*');
     var element = [];
     var _app = this.app;
 
-    for( i = 0; i < all_element.length; i++ ) {
+    for (i = 0; i < all_element.length; i++) {
         element[all_element[i].id] = all_element[i];
     }
 
-    element['container'].setAttribute( 'style', `
-        width: 320px;
-        position: relative;
-        height: 480px;
-    ` );
+    element['container'].setAttribute('style', 'width: 320px; position: relative; height: 480px;');
 
-    element['noddle'].setAttribute( 'style', `
-        width: 320px;
-        position: absolute;
-        z-index: -1;
-        transition: opacity 1s;
-    ` );
+    element['noddle'].setAttribute('style', 'width: 320px; left:0; position: absolute; z-index: -1; transition: opacity 1s;');
 
-    element['noddle-after'].setAttribute( 'style', `
-        width: 320px;
-        position: absolute;
-        z-index: -3;
-    ` );
+    element['noddle-after'].setAttribute('style', 'width: 320px; left:0; position: absolute; z-index: -3;');
 
+    element['smoke'].setAttribute('style', 'transition: top 1s, opacity 2s;opacity: 0; top: 80px; width: 320px; position: absolute; z-index: 4;');
 
-    element['shake-popup'].setAttribute( 'style', `
-        top: 120px;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-    ` );
+    // if( is_ios ) {
+    //     element['shake-popup'].setAttribute( 'src', this.app.path + 'images/cta_safari.png' );
+    // }
 
-    element['link-btn'].setAttribute( 'style', `
-        bottom: 10px;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index:-4;
-        opacity: 0;
-        transition: opacity 0.5s;
-    ` );
+    element['shake-popup'].setAttribute('style', 'top: 120px; position: absolute; left: 55px; z-index: 10;');
 
-    element['gredients'].setAttribute( 'style', `
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        height: 280px;
-    ` );
+    element['link-btn'].setAttribute('style', 'bottom: 10px; position: absolute; left: 40px; z-index:-4; opacity: 0; transition: opacity 0.5s;');
 
-    element['udang'].setAttribute( 'style', `
-        position: relative;
-        left: 12px;
-        top: 53px;
-    ` );
+    element['gredients'].setAttribute('style', 'position: absolute; width: 320px; bottom: 0; height: 280px;');
 
-    element['chikuwa'].setAttribute( 'style', `
-        position: relative;
-        left: 8px;
-        top: 9px;
-    ` );
+    element['udang'].setAttribute('style', 'position: relative; left: 12px; top: 53px;');
 
-    element['parika'].setAttribute( 'style', `
-        position: relative;
-        top: 0;
-        left: 30px;
-    ` );
+    element['chikuwa'].setAttribute('style', 'position: relative; left: 8px; top: 9px;');
 
-    element['chilli'].setAttribute( 'style', `
-        position: relative;
-        left: 60px;
-        top: 11px;
-    ` );
+    element['parika'].setAttribute('style', 'position: relative; top: 0;left: 30px;');
 
-    var move_gredients = ( function() {
+    element['chilli'].setAttribute('style', 'position: relative; left: 60px; top: 11px;');
+
+    var completed = false
+
+    var move_gredients = (function() {
         var complete_percent = 0;
 
         return function() {
+            completed = true
+            _app.tracker('E', 'shaked')
             element['shake-popup'].style.display = 'none';
 
-            var gredients_loop = setInterval( function() {
-                if( complete_percent > 20) {
+            var gredients_loop = setInterval(function() {
+                if (complete_percent > 20) {
                     element['gredients'].style.display = 'none';
-                    element['noddle'].style.opacity = 0;
-                    setTimeout( function() {
-                        element['link-btn'].style.zIndex = 10;
-                        element['link-btn'].style.opacity = 1;
-                    }, 2000 );
-                    clearInterval( gredients_loop );
+                    setTimeout(function() {
+                        element['noddle'].style.opacity = 0;
+                        element['smoke'].style.zIndex = -4;
+
+                        setTimeout(function() {
+                            element['link-btn'].style.zIndex = 10;
+                            element['link-btn'].style.opacity = 1;
+                        }, 2000);
+                    }, 3000);
+                    clearInterval(gredients_loop);
+                } else if (complete_percent == 5) {
+                    setInterval(function() {
+                        if (element['smoke'].style.top == '80px') {
+                            element['smoke'].style.top = '0';
+                            element['smoke'].style.opacity = '0';
+                        } else {
+                            element['smoke'].style.top = '80px';
+                            element['smoke'].style.opacity = '1';
+                        }
+                    }, 1000);
                 }
 
                 complete_percent++;
+
+                element['smoke'].style.opacity = '1';
                 // Set style to move ingredient
-                element['udang'].style.left = parseInt( element['udang'].style.left.replace( 'px', '' ) ) + 3.4 + 'px';
-                element['udang'].style.top = parseInt( element['udang'].style.top.replace( 'px', '' ) ) + 3.65 + 'px';
-                element['chikuwa'].style.top = parseInt( element['chikuwa'].style.top.replace( 'px', '' ) ) + 3.35 + 'px';
-                element['chikuwa'].style.left = parseInt( element['chikuwa'].style.left.replace( 'px', '' ) ) + 1.8 + 'px';
-                element['parika'].style.top = parseInt( element['parika'].style.top.replace( 'px', '' ) ) + 3.05 + 'px';
-                element['chilli'].style.left = parseInt( element['chilli'].style.left.replace( 'px', '' ) ) - 1.5 + 'px';
-                element['chilli'].style.top = parseInt( element['chilli'].style.top.replace( 'px', '' ) ) + 3.95 + 'px';
-            }, 50 );
+                element['udang'].style.left = parseInt(element['udang'].style.left.replace('px', '')) + 3.4 + 'px';
+                element['udang'].style.top = parseInt(element['udang'].style.top.replace('px', '')) + 3.65 + 'px';
+                element['chikuwa'].style.top = parseInt(element['chikuwa'].style.top.replace('px', '')) + 3.35 + 'px';
+                element['chikuwa'].style.left = parseInt(element['chikuwa'].style.left.replace('px', '')) + 1.8 + 'px';
+                element['parika'].style.top = parseInt(element['parika'].style.top.replace('px', '')) + 3.05 + 'px';
+                element['chilli'].style.left = parseInt(element['chilli'].style.left.replace('px', '')) - 1.5 + 'px';
+                element['chilli'].style.top = parseInt(element['chilli'].style.top.replace('px', '')) + 3.95 + 'px';
+            }, 50);
         }
 
         window.removeEventListener('shake', shakeEventDidOccur, false);
-    } )();
+    })();
 
     //Eventlistener
-    window.addEventListener( 'shake', shakeEventDidOccur, false );
-    element['link-btn'].addEventListener( 'click', function() {
+    window.addEventListener('shake', shakeEventDidOccur, false);
+    element['link-btn'].addEventListener('click', function() {
         openLink();
-    } );
+    });
+
+    if ( is_ios ) {
+      setTimeout(function() {
+          if (!completed) {
+              move_gredients()
+          }
+      }, 3000)
+    }
+
 
     //callback
-    function shakeEventDidOccur () {
+    function shakeEventDidOccur() {
         //put your own code here etc.
         move_gredients();
     }
 
     function openLink() {
-        _app.linkOpener( 'https://www.pizzahut.co.id/promosi/santap-di-restoran/asian-spaghetti-yuzu-breeze?utm_source=imx&utm_medium=rmb&utm_campaign=yuzu_asianspagethi' );
+        _app.tracker('E', 'landing_page')
+        _app.linkOpener('https://www.pizzahut.co.id/promosi/santap-di-restoran/asian-spaghetti-yuzu-breeze?utm_source=imx&utm_medium=rmb&utm_campaign=yuzu_asianspagethi');
     }
 }
 
